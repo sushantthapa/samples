@@ -33,3 +33,16 @@ workflows:
     artifacts:
       - simplistic_calculator/android/app/build/outputs/apk/release/app-release.apk
       - simplistic_calculator/build/ios/iphoneos/*.ipa
+
+  test:
+    name: Run Flutter Tests
+    scripts:
+      - name: Install dependencies
+        script: |
+          cd simplistic_calculator
+          flutter pub get
+
+      - name: Run unit tests
+        script: |
+          cd simplistic_calculator
+          flutter test
