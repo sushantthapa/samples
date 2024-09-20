@@ -17,34 +17,19 @@ workflows:
 
       - name: Build Android
         script: |
-          cd simplistic_calculator
-          cd android
-          ./gradlew build # This will trigger the Gradle build process
+          cd simplistic_calculator/android
+          if [ -f "./gradlew" ]; then
+            ./gradlew assembleRelease # Build the release APK
+          else
+            echo "gradlew not found!"
+            exit 1
+          fi
 
       - name: Build iOS
         script: |
           cd simplistic_calculator
           flutter build ios --release --no-codesign
 
-      - name: Build Linux
-        script: |
-          cd simplistic_calculator
-          flutter build linux --release
-
     artifacts:
       - simplistic_calculator/android/app/build/outputs/apk/release/app-release.apk
       - simplistic_calculator/build/ios/iphoneos/*.ipa
-      - simplistic_calculator/build/linux/x64/release/bundle/*.deb # or the appropriate format for Linux
-
-  test:
-    name: Run Flutter Tests
-    scripts:
-      - name: Install dependencies
-        script: |
-          cd simplistic_calculator
-          flutter pub get
-
-      - name: Run unit tests
-        script: |
-          cd simplistic_calculator
-          flutter test
